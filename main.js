@@ -393,8 +393,10 @@ function getMaskedToken(discord_token) {
 async function invite(discord_token, invite_code) {
   log("x-context-propertiesの値を計算しています...");
 
-  // 招待リンク情報の取得にトークンは必要ない
-  let response = await fetch(`https://discord.com/api/v9/invites/${invite_code}?with_counts=true&with_expiration=true&with_permissions=true`, {
+  // 招待リンク情報の取得もプロキシを経由させる
+  const proxy = "https://orange-term-46ed.snwioug.workers.dev/?url=";
+  const target = encodeURIComponent(`https://discord.com/api/v9/invites/${invite_code}?with_counts=true&with_expiration=true&with_permissions=true`);
+  let response = await fetch(proxy + target, {
     "headers": {
       "x-debug-options": "bugReporterEnabled",
       "x-discord-locale": new Intl.Locale(navigator.language).baseName,
@@ -428,7 +430,6 @@ async function invite(discord_token, invite_code) {
       };
     }
     else if (response.status === 401) {
-      // ここ実行されたら意味がわからん
       log(`❌ 認証が必要なようです。`);
       return {
         error: "invite",
