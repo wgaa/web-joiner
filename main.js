@@ -366,7 +366,9 @@ function getSessionId(discord_token) {
 }
 
 async function getFingerprintAndSetCookie() {
-  const response = await fetch("https://discord-api.soyaaaaana.com/experiments", {
+  const proxy = "https://orange-term-46ed.snwioug.workers.dev/?url=";
+  const target = encodeURIComponent("https://discord.com/api/v9/experiments");
+  const response = await fetch(proxy + target, {
     headers: {
       "x-context-properties": btoa(JSON.stringify({
         location: "/channels/@me"
@@ -533,7 +535,9 @@ async function invite_main(discord_token, invite_code, x_context_properties, x_f
 
   log(`${token_mask} サーバーへの参加リクエストを送信しています...`);
 
-  const response = await fetch("https://discord-api.soyaaaaana.com/invite/" + invite_code, {
+  const proxy = "https://orange-term-46ed.snwioug.workers.dev/?url=";
+  const target = encodeURIComponent("https://discord.com/api/v9/invites/" + invite_code);
+  const response = await fetch(proxy + target, {
     headers: headers,
     body: JSON.stringify({
       session_id: session_id
