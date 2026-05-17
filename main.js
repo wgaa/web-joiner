@@ -52,16 +52,35 @@ function onCaptchaLoad() {
   loaded = true;
 }
 
+// main.js の initCaptcha 関数を差し替え
 function initCaptcha(sitekey, rqdata) {
-  if (!loaded) {
-    log("❌ hCaptchaウィジェットはまだ読み込まれていません。");
+  const container = document.getElementById("captcha-box");
+  if (!container) {
+    log("❌ キャプチャを表示するコンテナが見つかりません。");
     return;
   }
 
-  let params = { sitekey: sitekey, callback: onSuccess };
-  window.hcaptcha.render("captcha-box", params);
-  hcaptcha.setData("", { rqdata: rqdata });
-  log("hCaptchaウィジェットを配置しました。")
+  if (!loaded) {
+    log("❌ hCaptchaウィジェットはまだ読み込まれていません。少し待ってから再試行してください。");
+    // 読み込み完了を待つために少しリトライを入れるのも手です
+    return;
+  }
+
+  try {
+    let params = { 
+      sitekey: sitekey, 
+      callback: onSuccess,
+      theme: "dark"
+    };
+    // 既存のコンテンツをクリアしてからレンダリング
+    container.innerHTML = "";
+    window.hcaptcha.render("captcha-box", params);
+    hcaptcha.setData("captcha-box", { rqdata: rqdata });
+    log("hCaptchaウィジェットを配置しました。解決してください。");
+  } catch (e) {
+    console.error(e);
+    log("❌ hCaptchaのレンダリングに失敗しました。");
+  }
 }
 
 // ========== https://qiita.com/ShotaroImai/items/7ea552323a1f89d67907 ==========
