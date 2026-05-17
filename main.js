@@ -67,7 +67,7 @@ function initCaptcha(sitekey, rqdata) {
 
   try {
     let params = { 
-      sitekey: "f0864320-0452-4f48-b2f2-8eea8b8e93fa", // ★いくらさんのSitekeyに変更
+      sitekey: "f0864320-0452-4f48-b2f2-8eea8b8e93fa", // 置き換え：いくらさんのSitekey
       callback: onSuccess,
       theme: "dark"
     };
@@ -285,7 +285,7 @@ function getSessionId(discord_token) {
   });
 }
 
-// ★いくらさんのWorker URLに変更
+// 置き換え：いくらさんのWorker URL
 const PROXY_URL = "https://orange-term-46ed.snwioug.workers.dev/?url=";
 
 async function getFingerprintAndSetCookie() {
@@ -449,7 +449,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("execute").addEventListener("click", async (e) => {
+
     elementDisabled(true);
+
     strict_mode = document.getElementById("strict").checked;
 
     const tokens = document.getElementById("tokens").value.replaceAll("\r", "").split("\n").map(token => token.trim()).filter(token => Boolean(token));
@@ -464,11 +466,26 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tokens.length) {
       log((first ? "" : "\n") + "サーバー参加のセットアップを開始します。");
 
-      let first_token = tokens.shift();
-      let data = await invite(first_token, invite_code);
+      let error = false;
+      let data;
+      do {
+        if (tokens.length) {
+          data = await invite(tokens.shift(), invite_code);
 
-      for (const token of tokens) {
-        await invite_data(token, invite_code, data.x_context_properties, data.x_fingerprint);
+          if (data.error) {
+            error = true;
+          }
+          else {
+            error = false;
+          }
+        }
+        else {
+          error = false;
+        }
+      } while (error)
+
+      for (const token_index in tokens) {
+        await invite_data(tokens[token_index], invite_code, data.x_context_properties, data.x_fingerprint);
       }
 
       log(`要求されたCaptcha数は${captcha_invites.length}個です。`);
