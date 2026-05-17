@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Discord Guild Joiner</title>
+    <meta content="Discordサーバーに自動で参加します" name="description">
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.jsdelivr.net/npm/bootstrap@latest/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@latest/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://hcaptcha.com/1/api.js?onload=onCaptchaLoad&render=explicit" async defer></script>
+    <style>
+      body {
+        margin: 16;
+      }
+    </style>
+    <script src="./main.js"></script>
+  </head>
+  <body lang="ja" data-bs-theme="light" style="display:none">
+
+    <h2 class="mb-4 text-center user-select-none">Discord Guild Joiner</h2>
+
+    <div class="mb-3">
+      <label for="tokens" class="form-label user-select-none">Discord トークン</label>
+      <textarea class="form-control" id="tokens" aria-describedby="description1" style="field-sizing:content;min-height:calc(.85em + 2.0lh)"></textarea>
+      <div class="form-text user-select-none" id="description1">改行で区切る</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="invite" class="form-label user-select-none">招待リンク</label>
+      <input type="text" class="form-control user-select-none" id="invite" placeholder="discord.gg/"></input>
+    </div>
+
+    <!-- <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" id="auto_carl" checked>
+      <label class="form-check-label user-select-none" for="auto_carl">Carl-botのロール付与を自動化する</label>
+    </div> -->
+
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" id="strict">
+      <label class="form-check-label user-select-none" for="strict" aria-describedby="description2">正常実行できない場合にキャンセルする</label>
+      <div class="form-text user-select-none" id="description2">
+        サーバー参加時に使用する内部値を正しく取得できない場合に、ランダム値や固定値を使用するのではなく操作をキャンセルするオプションです。
+        <br>
+        このオプションを使用すると、Joinerの使用によるトークンの無効化、電話番号認証の要求などを防ぐことができる場合があります。
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <button type="button" class="btn btn-primary text-nowrap mb-3 col-3 mx-auto" id="execute">実行</button>
+      <div class="mb-3 d-flex flex-column mx-auto">
+        <label class="form-label user-select-none">Captchaが要求された場合に、ここにhCaptchaウィジェットが表示されます。</label>
+        <div class="mx-auto">
+          <!-- hCaptcha ウィジェット -->
+          <div id="captcha-box" class="h-captcha" data-callback="onSuccess" data-theme="dark"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4" id="server_info" style="display:none">
+      <table class="table table-dark table-striped">
+        <tbody>
+          <tr>
+            <th scope="row">サーバー名</th>
+            <td id="server_name"></td>
+          </tr>
+          <tr>
+            <th scope="row">サーバーID</th>
+            <td id="server_id"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mb-3">
+      <label for="tokens" class="form-label user-select-none">ログ</label>
+      <textarea class="form-control" id="log" style="field-sizing:content;height:calc(.85em + 15.0lh)" readonly></textarea>
+    </div>
+
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="auto_scroll" checked>
+      <label class="form-check-label user-select-none" for="auto_scroll">ログの自動スクロール</label>
+    </div>
+
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"9443c85b091f4668a6dc011b0b27c8d0","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
